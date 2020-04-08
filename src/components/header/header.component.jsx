@@ -1,21 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import { auth } from "../../firebase/firebase.utils";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
-import { selectCartHidden } from "../../redux/cart/cart.selectors";
 import currentUserContext from "../../contexts/current-user/current-user.context";
 
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 
 import "./header.styles.scss";
+import { CartContext } from "../../providers/cart/cart.provider";
 
-const Header = ({ hidden }) => {
+const Header = () => {
   const currentUser = useContext(currentUserContext);
-  console.log(currentUser);
+  const { hidden } = useContext(CartContext);
 
   return (
     <div className="header">
@@ -38,6 +36,7 @@ const Header = ({ hidden }) => {
             SIGN IN
           </Link>
         )}
+
         <CartIcon />
       </div>
       {hidden ? null : <CartDropdown />}
@@ -45,8 +44,4 @@ const Header = ({ hidden }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  hidden: selectCartHidden,
-});
-
-export default connect(mapStateToProps)(Header);
+export default Header;
